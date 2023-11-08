@@ -3,6 +3,7 @@ package com.sandeep.udemy.broker.wallet;
 import com.sandeep.udemy.broker.data.InMemoryAccountStore;
 import com.sandeep.udemy.broker.wallet.api.RestApiResponse;
 import com.sandeep.udemy.broker.wallet.error.CustomError;
+import com.sandeep.udemy.broker.wallet.error.FiatCurrencyNoSupportedException;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
@@ -54,8 +55,13 @@ public record WalletController(InMemoryAccountStore store) {
             consumes = MediaType.APPLICATION_JSON,
             produces = MediaType.APPLICATION_JSON
     )
-    public Void withdrawFiatMoney(@Body WithdrawFaitMoney deposit){
+    public Void withdrawFiatMoney(@Body WithdrawFaitMoney withdraw){
         // Option 2: Customer Error Processing
+        if(!SUPPORTED_FLAT_CURRENCIES.contains(withdraw.symbol().value())){
+            throw new FiatCurrencyNoSupportedException(String.format("Only %s are supported", SUPPORTED_FLAT_CURRENCIES));
+        }
+        Wallet wallet = store.withdrawFromWallet(withdraw);
+        LOG.debug("Withdraw from wallet: {}", wallet);
         return null;
     }
 

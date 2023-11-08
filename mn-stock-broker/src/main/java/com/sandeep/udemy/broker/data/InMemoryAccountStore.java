@@ -1,7 +1,9 @@
 package com.sandeep.udemy.broker.data;
 
+import com.sandeep.udemy.broker.Symbol;
 import com.sandeep.udemy.broker.wallet.DepositFaitMoney;
 import com.sandeep.udemy.broker.wallet.Wallet;
+import com.sandeep.udemy.broker.wallet.WithdrawFaitMoney;
 import com.sandeep.udemy.broker.watchlist.WatchList;
 import jakarta.inject.Singleton;
 
@@ -36,18 +38,26 @@ public class InMemoryAccountStore {
     }
 
     public Wallet depositToWallet(DepositFaitMoney deposit) {
+        return addAvailableInWallet(deposit.accountId(), deposit.walletId(), deposit.symbol(), deposit.amount());
+    }
+
+    public Wallet withdrawFromWallet(WithdrawFaitMoney withdraw) {
+        return addAvailableInWallet(withdraw.accountId(), withdraw.walletId(), withdraw.symbol(), withdraw.amount());
+    }
+
+    private Wallet addAvailableInWallet(UUID accountId, UUID walletId, Symbol symbol, BigDecimal amount) {
         final var wallets = Optional.ofNullable(
-                walletsPerAccount.get(deposit.accountId())
+                walletsPerAccount.get(accountId)
         ).orElse(
                 new HashMap<>()
         );
 
-        var oldWallet = Optional.ofNullable(wallets.get(deposit.walletId())
+        var oldWallet = Optional.ofNullable(wallets.get(walletId)
         ).orElse(
-                new Wallet(ACCOUNT_ID, deposit.walletId(), deposit.symbol(), BigDecimal.ZERO, BigDecimal.ZERO)
+                new Wallet(ACCOUNT_ID, walletId, symbol, BigDecimal.ZERO, BigDecimal.ZERO)
         );
 
-        var newWallet = oldWallet.addAvailable(deposit.amount());
+        var newWallet = oldWallet.addAvailable(amount);
         // Update the wallet
         wallets.put(newWallet.walletId(), newWallet);
         walletsPerAccount.put(newWallet.accountId(), wallets);

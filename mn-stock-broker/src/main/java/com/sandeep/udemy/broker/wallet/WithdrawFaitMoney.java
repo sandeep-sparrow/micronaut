@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record WithdrawFaitMoney (
     UUID accountId,
-    UUID wallerId,
+    UUID walletId,
     Symbol symbol,
     BigDecimal amount
 ) {
