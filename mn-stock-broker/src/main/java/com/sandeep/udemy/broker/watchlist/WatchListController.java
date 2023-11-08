@@ -1,16 +1,14 @@
-package com.sandeep.udemy.watchlist;
+package com.sandeep.udemy.broker.watchlist;
 
 import com.sandeep.udemy.broker.data.InMemoryAccountStore;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 
-import java.util.UUID;
+import static com.sandeep.udemy.broker.data.InMemoryAccountStore.ACCOUNT_ID;
 
 @Controller("/account/watchlist")
 public record WatchListController(InMemoryAccountStore store) {
-
-    public static final UUID ACCOUNT_ID = UUID.randomUUID();
 
     @Get(produces = MediaType.APPLICATION_JSON)
     public WatchList get(){
