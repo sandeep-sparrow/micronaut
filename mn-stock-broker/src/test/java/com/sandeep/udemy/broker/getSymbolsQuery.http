@@ -1,0 +1,1 @@
+GET localhost:8080/symbols/filter?max=2&offset=1
