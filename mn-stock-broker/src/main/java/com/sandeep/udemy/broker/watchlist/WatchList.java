@@ -1,4 +1,4 @@
-package com.sandeep.udemy.watchlist;
+package com.sandeep.udemy.broker.watchlist;
 
 import com.sandeep.udemy.broker.Symbol;
 

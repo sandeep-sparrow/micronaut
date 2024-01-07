@@ -2,8 +2,6 @@ package com.sandeep.udemy.broker.watchlist;
 
 import com.sandeep.udemy.broker.Symbol;
 import com.sandeep.udemy.broker.data.InMemoryAccountStore;
-import com.sandeep.udemy.watchlist.WatchList;
-import com.sandeep.udemy.watchlist.WatchListController;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
